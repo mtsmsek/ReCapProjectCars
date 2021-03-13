@@ -18,7 +18,15 @@ namespace Business.Concrete
 
         public void Add(Car car)
         {
-            _icarDal.Add(car);
+            if (car.ModelYear.Length>2 && car.UnitPrice>0)
+            {
+                _icarDal.Add(car);
+            }
+            else
+            {
+                Console.WriteLine("Araba adı 2 harften uzun değil ya da günlük fiyat 0'dan küçük)");
+            }
+            
         }
 
 
@@ -32,12 +40,26 @@ namespace Business.Concrete
             return _icarDal.GetAll();
         }
 
-        public List<Car> GetById(int id)
+
+        public List<Car> GetByBrandId(int id)
         {
-            return _icarDal.GetById(id);
+            return _icarDal.GetAll(p => p.BrandId == id);
+        }
+
+        public List<Car> GetByColorId(int id)
+        {
+            return _icarDal.GetAll(p=> p.ColorId == id);
+        }
+
+    
+
+        public List<Car> GetByUnitPrice(decimal min, decimal max)
+        {
+            return _icarDal.GetAll(p => p.UnitPrice >= min && p.UnitPrice <= max);
         }
 
      
+
         public void Update(Car car)
         {
             _icarDal.Update(car);
